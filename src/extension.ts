@@ -2,6 +2,22 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+const insertText = (val:string) => {
+	const editor = vscode.window.activeTextEditor;
+
+	if (!editor) {
+		vscode.window.showErrorMessage('Can\'t insert log because no document is open');
+		return;
+	}
+
+	const selection = editor.selection;
+
+	const lineOfSelectedVar = selection.active.line;
+
+	editor.edit((editBuilder) => {
+		editBuilder.insert(new vscode.Position(lineOfSelectedVar + 1, 0),val)
+	});
+}
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {  
@@ -27,6 +43,17 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	const insertLog = vscode.commands.registerCommand('firstExt.insertLog', () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) { return; }
+		const selection = editor.selection;
+		const text = editor.document.getText(selection);
+		const logToInsert = `console.log('${text}: ',${text});\n`;
+		text ? insertText(logToInsert) : insertText('console.log();');
+	});
+	context.subscriptions.push(insertLog);
+
 }
 
 // this method is called when your extension is deactivated

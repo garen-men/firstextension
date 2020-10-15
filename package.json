@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:firstExt.hello"
+		"onCommand:firstExt.hello",
+		"onCommand:firstExt.insertLog"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,16 +19,35 @@
 			{
 				"command": "firstExt.hello",
 				"title": "Hello World"
+			},
+			{
+				"command": "firstExt.insertLog",
+				"title": "Insert Log Statement"
 			}
 		],
-				"keybindings": [
-					{
-						"command": "firstExt.hello",
-						"key": "ctrl+w",
-						"mac": "cmd+shift+e",
-						"when": "editorTextFocus"
-					}
-				]
+		"keybindings": [
+			{
+				"command": "firstExt.hello",
+				"key": "ctrl+e",
+				"mac": "cmd+shift+e",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "firstExt.insertLog",
+				"key": "shift+ctrl+l",
+				"mac": "shift+cmd+l",
+				"when": "editorTextFocus"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorTextFocus",
+					"command": "firstExt.insertLog",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
