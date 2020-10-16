@@ -18,6 +18,29 @@ const insertText = (val:string) => {
 		editBuilder.insert(new vscode.Position(lineOfSelectedVar + 1, 0),val)
 	});
 }
+
+function getAllLogStatements() {
+	const editor = vscode.window.activeTextEditor;
+	if (!editor) { return []; }
+
+	const document = editor.document;
+	const documentText = editor.document.getText();
+
+	let logStatements = [];
+
+	const logRegex = /console.(log|debug|info|warn|error|assert|dir|dirxml|trace|group|groupEnd|time|timeEnd|profile|profileEnd|count)\((.*)\);?/g;
+	let match;
+	while (match = logRegex.exec(documentText)) {
+		let matchRange =
+			new vscode.Range(
+				document.positionAt(match.index),
+				document.positionAt(match.index + match[0].length)
+			);
+		if (!matchRange.isEmpty)
+			logStatements.push(matchRange);
+	}
+	return logStatements;
+}
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {  
@@ -53,6 +76,26 @@ export function activate(context: vscode.ExtensionContext) {
 		text ? insertText(logToInsert) : insertText('console.log();');
 	});
 	context.subscriptions.push(insertLog);
+
+
+	const deleteAllLog = vscode.commands.registerCommand('firstExt.delLog', () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) { return; }
+
+		let workspaceEdit = new vscode.WorkspaceEdit();
+		const document = editor.document;
+
+		const logStatements = getAllLogStatements();
+
+		logStatements.forEach((log) => {
+			workspaceEdit.delete(document.uri, log);
+		});
+
+		vscode.workspace.applyEdit(workspaceEdit).then(() => {
+			vscode.window.showInformationMessage(`${logStatements.length} console.log deleted`);
+		});
+	});
+	context.subscriptions.push(deleteAllLog);
 
 }
 
