@@ -97,6 +97,20 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(deleteAllLog);
 
+	let removeComments = vscode.commands.registerCommand('firstExt.removeComments', function () {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) { return; }
+
+		editor.edit(editBuilder => {
+			let text = editor.document.getText();
+			text = text.replace(/((\/\*([\w\W]+?)\*\/)|(\/\/(.(?!"\)))+)|(^\s*(?=\r?$)\n))/gm, '').replace(/(^\s*(?=\r?$)\n)/gm, '').replace(/\\n\\n\?/gm, '');
+			const end = new vscode.Position(editor.document.lineCount + 1, 0);
+			editBuilder.replace(new vscode.Range(new vscode.Position(0, 0), end), text);
+			vscode.commands.executeCommand('editor.action.formatDocument');
+		});
+	});
+
+	context.subscriptions.push(removeComments);
 }
 
 // this method is called when your extension is deactivated

@@ -12,7 +12,8 @@
 	"activationEvents": [
 		"onCommand:firstExt.hello",
 		"onCommand:firstExt.insertLog",
-		"onCommand:firstExt.delLog"
+		"onCommand:firstExt.delLog",
+		"onCommand:firstExt.removeComments"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -28,6 +29,10 @@
 			{
 				"command": "firstExt.delLog",
 				"title": "Delete Logs"
+			},
+			{
+				"command": "firstExt.removeComments",
+				"title": "删除所有注释"
 			}
 		],
 		"keybindings": [
@@ -54,6 +59,11 @@
 				{
 					"when": "editorTextFocus",
 					"command": "firstExt.delLog",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "firstExt.removeComments",
 					"group": "navigation"
 				}
 			]
