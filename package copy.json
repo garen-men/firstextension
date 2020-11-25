@@ -18,31 +18,56 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "firstExt.hello",
+				"title": "Hello World"
+			},
+			{
+				"command": "firstExt.insertLog",
+				"title": "Insert Log Statement"
+			},
+			{
+				"command": "firstExt.delLog",
+				"title": "Delete Logs"
+			},
+			{
+				"command": "firstExt.removeComments",
+				"title": "删除所有注释"
+			}
 		],
 		"keybindings": [
+			{
+				"command": "firstExt.hello",
+				"key": "ctrl+e",
+				"mac": "cmd+shift+e",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "firstExt.insertLog",
+				"key": "shift+ctrl+l",
+				"mac": "shift+cmd+l",
+				"when": "editorTextFocus"
+			}
 		],
 		"menus": {
 			"editor/context": [
-			]
-		},
-		"viewsContainers": {
-			"activitybar": [
 				{
-                    "id": "novel-read",
-                    "title": "小说阅读",
-					"icon": "images/pdf.svg"
-				}
-			]
-		},
-		"views": {
-			"novel-read": [
+					"when": "editorTextFocus",
+					"command": "firstExt.insertLog",
+					"group": "navigation"
+				},
 				{
-					"name": "列表栏",
-					"id": "novel-list"
+					"when": "editorTextFocus",
+					"command": "firstExt.delLog",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "firstExt.removeComments",
+					"group": "navigation"
 				}
 			]
 		}
-
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
