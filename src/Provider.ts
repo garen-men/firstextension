@@ -21,7 +21,6 @@ export default class DataProvider implements TreeDataProvider<FundInfo> {
         }, 200)
     }
 
-    // eslint-disable-next-line class-methods-use-this
     getTreeItem(info: FundInfo): NovelTreeItem {
         return new NovelTreeItem(info)
     }

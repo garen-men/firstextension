@@ -13,12 +13,12 @@ export function activate(context: ExtensionContext) {
 	const provider = new Provider()
 
 	// 数据注册
-	window.registerTreeDataProvider('fund-list', provider)
+	window.registerTreeDataProvider('novel-list', provider)
 
 	// 定时任务
 	setInterval(() => {
 		provider.refresh()
-	}, interval * 1000)
+	}, interval * 1000* 60 * 60 * 24)
 
 	// menu 事件
 	context.subscriptions.push(

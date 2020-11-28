@@ -10,10 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:firstExt.hello",
-		"onCommand:firstExt.insertLog",
-		"onCommand:firstExt.delLog",
-		"onCommand:firstExt.removeComments"
+		"onView:novel-list"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
