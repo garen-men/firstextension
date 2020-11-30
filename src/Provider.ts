@@ -1,13 +1,13 @@
 import { window, Event, EventEmitter, TreeDataProvider } from 'vscode'
-import { fundApi } from './utils'
+import { fundApi, getLocalBooks } from './utils'
 import fundHandle from './Handle'
 // eslint-disable-next-line no-unused-vars
 import NovelTreeItem from './NovelTreeItem'
 
-export default class DataProvider implements TreeDataProvider<FundInfo> {
-    public refreshEvent: EventEmitter<FundInfo | null> = new EventEmitter<FundInfo | null>()
+export default class DataProvider implements TreeDataProvider<Novel> {
+    public refreshEvent: EventEmitter<Novel | null> = new EventEmitter<Novel | null>()
 
-    readonly onDidChangeTreeData: Event<FundInfo | null> = this.refreshEvent.event
+    readonly onDidChangeTreeData: Event<Novel | null> = this.refreshEvent.event
 
     private order: number
 
@@ -21,17 +21,12 @@ export default class DataProvider implements TreeDataProvider<FundInfo> {
         }, 200)
     }
 
-    getTreeItem(info: FundInfo): NovelTreeItem {
+    getTreeItem(info: Novel): NovelTreeItem {
         return new NovelTreeItem(info)
     }
 
-    getChildren(): Promise<FundInfo[]> {
-        const { order } = this
-        return fundHandle.getFavorites().then((infos) =>
-            infos.sort(({ changeRate: a = 0 }, { changeRate: b = 0 }) => {
-                return (+a >= +b ? 1 : -1) * order
-            })
-        )
+    getChildren(): Promise<Novel[]> {
+        return getLocalBooks()
     }
 
     changeOrder(): void {
@@ -39,32 +34,32 @@ export default class DataProvider implements TreeDataProvider<FundInfo> {
         this.refresh()
     }
 
-    async addFund() {
-        const res = await window.showInputBox({
-            value: '',
-            valueSelection: [5, -1],
-            prompt: '添加基金到自选',
-            placeHolder: 'Add Fund To Favorite',
-            validateInput: (inputCode: string) => {
-                const codeArray = inputCode.split(/[\W]/)
-                const hasError = codeArray.some((code) => {
-                    return code !== '' && !/^\d+$/.test(code)
-                })
-                return hasError ? '基金代码输入有误' : null
-            },
-        })
-        if (res !== undefined) {
-            const codeArray = res.split(/[\W]/) || []
-            const newFunds: string[] = [...codeArray]
-            const result = await fundApi(newFunds)
-            if (result && result.length > 0) {
-                // 只更新能正常请求的代码
-                const codes = result.map((i) => i.code)
-                fundHandle.updateConfig(codes)
-                this.refresh()
-            } else {
-                window.showWarningMessage('stocks not found')
-            }
-        }
-    }
+    // async addFund() {
+    //     const res = await window.showInputBox({
+    //         value: '',
+    //         valueSelection: [5, -1],
+    //         prompt: '添加基金到自选',
+    //         placeHolder: 'Add Fund To Favorite',
+    //         validateInput: (inputCode: string) => {
+    //             const codeArray = inputCode.split(/[\W]/)
+    //             const hasError = codeArray.some((code) => {
+    //                 return code !== '' && !/^\d+$/.test(code)
+    //             })
+    //             return hasError ? '基金代码输入有误' : null
+    //         },
+    //     })
+    //     if (res !== undefined) {
+    //         const codeArray = res.split(/[\W]/) || []
+    //         const newFunds: string[] = [...codeArray]
+    //         const result = await fundApi(newFunds)
+    //         if (result && result.length > 0) {
+    //             // 只更新能正常请求的代码
+    //             const codes = result.map((i) => i.code)
+    //             fundHandle.updateConfig(codes)
+    //             this.refresh()
+    //         } else {
+    //             window.showWarningMessage('stocks not found')
+    //         }
+    //     }
+    // }
 }

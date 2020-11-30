@@ -20,7 +20,7 @@ const fundHandle = {
         config.update('fund-watch.favorites', favorites, true)
     },
 
-    async getFavorites(): Promise<FundInfo[]> {
+    async getFavorites(): Promise<Novel[]> {
         const favorite: string[] = workspace
             .getConfiguration()
             .get('fund-watch.favorites', [])

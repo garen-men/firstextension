@@ -1,8 +1,4 @@
-interface FundInfo {
-    now: string
+interface Novel {
     name: string
-    code: string
-    lastClose: string
-    changeRate: string
-    changeAmount: string
+    path: string
 }

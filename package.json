@@ -15,6 +15,15 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "openSelectedNovel",
+				"title": "打开该小说"
+			},
+			{
+				"command": "extension.demo.openWebview",
+				"title": "打开该小说"
+			}
+			
 		],
 		"keybindings": [
 		],
@@ -34,7 +43,7 @@
 		"views": {
 			"novel-read": [
 				{
-					"name": "列表栏",
+					"name": "本地列表栏",
 					"id": "novel-list"
 				}
 			]
@@ -60,6 +69,7 @@
 		"glob": "^7.1.6",
 		"mocha": "^8.1.3",
 		"typescript": "^4.0.2",
-		"vscode-test": "^1.4.0"
+		"vscode-test": "^1.4.0",
+		"open": "^7.0.0"
 	}
 }

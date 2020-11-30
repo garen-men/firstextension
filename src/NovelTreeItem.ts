@@ -1,32 +1,21 @@
 import { TreeItem } from 'vscode'
 
 export default class NovelTreeItem extends TreeItem {
-    info: FundInfo
+    info: Novel
 
-    constructor(info: FundInfo) {
-        const rate = Number(info.changeRate)
-        const icon = rate >= 0 ? '📈' : '📉'
-        const prev = rate >= 0 ? '+' : '-'
-        const rage = `${prev}${Math.abs(rate)}%`
-        const name = 123
+    constructor(info: Novel) {
+        super(`${info.name}`)
 
-        super(`${icon}${name} ${rage}`)
-
-        let sliceName = info.name
-        if (sliceName.length > 8) {
-            sliceName = `${sliceName.slice(0, 8)}...`
-        }
         const tips = [
-            `代码:　${info.code}`,
-            `名称:　${sliceName}`,
-            `--------------------------`,
-            `单位净值:　　　　${info.now}`,
-            `涨跌幅:　　　　　${info.changeRate}%`,
-            `涨跌额:　　　　　${info.changeAmount}`,
-            `昨收:　　　　　　${info.lastClose}`,
+            `名称:　${info.name}`,
         ]
 
         this.info = info
-        this.tooltip = tips.join('\r\n')
+        this.tooltip = tips.join('\r\n');
+        this.command = {
+            command: "openSelectedNovel",
+            title: "打开该小说",
+            arguments: [{ name: info.name, path: info.path }]
+        } 
     }
 }
