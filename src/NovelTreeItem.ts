@@ -1,7 +1,6 @@
 import { TreeItem } from 'vscode'
 
 export default class NovelTreeItem extends TreeItem {
-    info: Novel
 
     constructor(info: Novel) {
         super(`${info.name}`)
@@ -10,7 +9,6 @@ export default class NovelTreeItem extends TreeItem {
             `名称:　${info.name}`,
         ]
 
-        this.info = info
         this.tooltip = tips.join('\r\n');
         this.command = {
             command: "openSelectedNovel",
@@ -18,4 +16,6 @@ export default class NovelTreeItem extends TreeItem {
             arguments: [{ name: info.name, path: info.path }]
         } 
     }
+
+    contextValue = 'online';
 }
