@@ -1,9 +1,13 @@
 import * as https from 'https';
-import * as vscode from 'vscode';
 import * as Fs from 'fs';
 import * as Path from 'path';
 import * as Open from 'open';
+import { window, workspace } from 'vscode';
 export const LocalNovelsPath = '/Users/menglinlun/'
+import * as cheerio from 'cheerio';
+import DataProvider from './Provider';
+
+const DOMAIN = 'https://www.biquge.com.cn';
 
 // 请求
 const request = async (url: string): Promise<string> => {
@@ -95,21 +99,6 @@ export function fundApi(fundConfig: string[]): Promise<Novel[]> {
     // })
 }
 
-/**
- * 获取某个扩展文件相对于webview需要的一种特殊路径格式
- * 形如：vscode-resource:/Users/toonces/projects/vscode-cat-coding/media/cat.gif
- * @param context 上下文
- * @param relativePath 扩展中某个文件相对于根目录的路径，如 images/test.jpg
- */
-
-// export const getExtensionFileVscodeResource = function(context, relativePath) {
-//     const diskPath = Uri.file(Path.join(context.extensionPath, relativePath));
-//     return diskPath.with({ scheme: 'vscode-resource' }).toString();
-// }
-
-export function unique(arr: any[]) {
-    return Array.from(new Set(arr))
-}
 
 export function getLocalBooks(): Promise <Novel[]> {
 
@@ -127,4 +116,83 @@ export function getLocalBooks(): Promise <Novel[]> {
         }
     })
     return Promise.resolve(loaclnovellist)
+}
+
+
+export const searchOnline = async function (provider: DataProvider) {
+        const msg = await window.showInputBox({
+            password: false,
+            ignoreFocusOut: false,
+            placeHolder: '请输入小说的名字',
+            prompt: ''
+        });
+        if (msg) {
+            provider.treeNode = await search(msg);
+            provider.refresh(true);
+        }
+};
+
+
+export const search = async (keyword: string)=>{
+    const result = [] as any;
+    try {
+        const res = await request(DOMAIN + '/search.php?q=' + encodeURI(keyword));
+        console.log(res);
+
+        const $ = cheerio.load(res);
+        $('.result-list .result-item.result-game-item').each(function (i: number, elem: any) {
+            const title = $(elem).find('a.result-game-item-title-link span').text();
+            const author = $(elem).find('.result-game-item-info .result-game-item-info-tag:nth-child(1) span:nth-child(2)').text();
+            const path = $(elem).find('a.result-game-item-pic-link').attr().href;
+            console.log(title, author, path);
+
+            result.push(
+                    {
+                        type: '.biquge',
+                        name: `${title} - ${author}`,
+                        isDirectory: true,
+                        path
+                    }
+            );
+        });
+    } catch(error) {
+        console.warn(error);
+    }
+    return result;
+}
+
+export const getChapter = async (pathStr: string)=> {
+    const result = [] as any;
+    try {
+        const res = await request(DOMAIN + pathStr);
+        const $ = cheerio.load(res);
+        $('#list dd').each(function (i: number, elem: any) {
+            const name = $(elem).find('a').text();
+            const path = $(elem).find('a').attr().href;
+            result.push(
+                {
+                    type: '.biquge',
+                    name,
+                    isDirectory: false,
+                    path
+                }
+            );
+        });
+    } catch(error) {
+        console.warn(error);
+    }
+        return result;
+}
+
+export const getContent = async(pathStr: string)=> {
+    let result = '';
+    try {
+        const res = await request(DOMAIN + pathStr);
+        const $ = cheerio.load(res);
+        const html = $('#content').html();
+        result = html ? html : '';
+    } catch(error) {
+        console.warn(error);
+    }
+    return result;
 }
