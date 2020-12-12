@@ -8,7 +8,6 @@ export default class OnlineTreeItem extends TreeItem {
         const tips = [
             `名称:　${info.name}`,
         ]
-
         this.tooltip = tips.join('\r\n');
 
         this.collapsibleState = info.isDirectory ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None;
@@ -18,6 +17,7 @@ export default class OnlineTreeItem extends TreeItem {
             title: "打开该网络小说",
             arguments: [{ name: info.name, path: info.path }]
         } 
+        this.contextValue = info.isDirectory ? 'online' : 'onlineChapter'
     }
 
     contextValue = 'online';

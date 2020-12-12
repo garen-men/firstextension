@@ -29,7 +29,7 @@
 			},
 			{
 				"command": "openLocalDir",
-				"title": "本地目录"
+				"title": "添加本地图书"
 			},
 			{
 				"command": "addFavorite",
@@ -71,10 +71,32 @@
 		"views": {
 			"novel-read": [
 				{
-					"name": "本地列表栏",
+					"name": "小说列表栏",
 					"id": "novel-list"
+				},{
+					"name": "收藏的网络小说",
+					"id": "favorite-novel"
 				}
 			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "小说插件配置",
+			"properties": {
+				"novel.favorites": {
+					"type": "array",
+					"default": [],
+					"scope": "window",
+					"description": "小说收藏名单"
+				},
+				"novel.progress": {
+					"type": "object",
+					"default": {
+					},
+					"scope": "window",
+					"description": "小说阅读进度"
+				}
+			}
 		}
 	},
 	"scripts": {

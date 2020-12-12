@@ -17,5 +17,5 @@ export default class NovelTreeItem extends TreeItem {
         } 
     }
 
-    contextValue = 'online';
+    contextValue = 'local';
 }

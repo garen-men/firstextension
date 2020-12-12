@@ -148,7 +148,6 @@ export const search = async (keyword: string)=>{
 
             result.push(
                     {
-                        type: '.biquge',
                         name: `${title} - ${author}`,
                         isDirectory: true,
                         path
@@ -171,7 +170,6 @@ export const getChapter = async (pathStr: string)=> {
             const path = $(elem).find('a').attr().href;
             result.push(
                 {
-                    type: '.biquge',
                     name,
                     isDirectory: false,
                     path
