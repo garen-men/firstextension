@@ -2,7 +2,7 @@
 	"name": "firstextension",
 	"displayName": "FirstExtension",
 	"description": "a tutorial for extension",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"publisher": "mguy",
 	"repository": {
 		"type": "git",
@@ -78,7 +78,8 @@
 				{
 					"name": "小说列表栏",
 					"id": "novel-list"
-				},{
+				},
+				{
 					"name": "收藏的网络小说",
 					"id": "favorite-novel"
 				}
@@ -96,8 +97,7 @@
 				},
 				"novel.progress": {
 					"type": "object",
-					"default": {
-					},
+					"default": {},
 					"scope": "window",
 					"description": "小说阅读进度"
 				},
