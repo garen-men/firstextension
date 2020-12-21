@@ -25,17 +25,11 @@ export function activate(context: ExtensionContext) {
 
 	// menu 事件
 	context.subscriptions.push(
-		// commands.registerCommand(`novel.add`, () => {
-		// 	provider.addFund()
-		// }),
+
 		commands.registerCommand(`novel.refresh`, () => {
 			provider.refresh(true)
 		}),
-		// commands.registerCommand('novel.item.remove', (fund) => {
-		// 	const { code } = fund
-		// 	fundHandle.removeConfig(code)
-		// 	provider.refresh()
-		// }),
+
 		commands.registerCommand(`addFavorite`, function(args){
 
 			const config = workspace.getConfiguration();
