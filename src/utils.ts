@@ -8,7 +8,8 @@ import DataProvider from './Provider';
 
 const DOMAIN = 'https://www.biquge.com.cn';
 // 这是mac下路径,windows要去win的路径, mac下xxx要替换自己主机名字
-const LocalNovelsPath = '/Users/xxx/book';
+// const LocalNovelsPath = '/Users/xxx/book';
+const LocalNovelsPath = '/Users/menglinlun';
 // 请求
 const request = async (url: string): Promise<string> => {
     return new Promise((resolve, reject) => {

@@ -2,7 +2,12 @@
 	"name": "firstextension",
 	"displayName": "FirstExtension",
 	"description": "a tutorial for extension",
-	"version": "0.0.1",
+	"version": "1.0.0",
+	"publisher": "mguy",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/menglinlun/firstextension.git"
+	},
 	"engines": {
 		"vscode": "^1.50.0"
 	},

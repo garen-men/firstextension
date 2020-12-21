@@ -1,6 +1,6 @@
 # firstextension README
 
-This is the README for your extension "firstextension". After writing up a brief description, we recommend including the following sections.
+只是为了教程,不过也可用
 
 ## Features
 
