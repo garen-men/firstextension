@@ -2,13 +2,13 @@ import * as https from 'https';
 import * as Fs from 'fs';
 import * as Path from 'path';
 import * as Open from 'open';
-import { window, workspace } from 'vscode';
-export const LocalNovelsPath = '/Users/menglinlun/'
+import { ProgressLocation, ProgressOptions, window, workspace } from 'vscode';
 import * as cheerio from 'cheerio';
 import DataProvider from './Provider';
 
 const DOMAIN = 'https://www.biquge.com.cn';
-
+// 这是mac下路径,windows要去win的路径, mac下xxx要替换自己主机名字
+const LocalNovelsPath = '/Users/xxx/book';
 // 请求
 const request = async (url: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -28,77 +28,43 @@ const request = async (url: string): Promise<string> => {
     })
 }
 
-export function fundApi(fundConfig: string[]): Promise<Novel[]> {
-    const time = Date.now()
-    const promises: Promise<string>[] = []
+// 一个全局系统提示
+export class Notification {
+    private isStop = false;
+    private options: ProgressOptions = {
+        location: ProgressLocation.Notification,
+        title: 'loding...'
+    };
 
-    // const fileDir = vscode.workspace.getConfiguration('firstextension').get('fileDir', '');
-    // Open(fileDir);
-    const files = Fs.readdirSync("/Users/menglinlun");
-
-    // const files = Fs.readdirSync("/Users/menglinlun/.vscode/extensions/aooiu.z-reader-1.0.3/book");
-    console.log(files);
-
-        // files.forEach((file, inx) => {
-        //     file = Path.extname(file).substr(1)
-        // })
-    // vscode.commands.executeCommand('vscode.open', vscode.Uri.parse('/Users/menglinlun/射雕英雄传的副本.txt'));
-
-    
-        
-    const loaclnovellist = [] as any;
-    files.forEach((file: string) => {
-        const extname = Path.extname(file).substr(1);
-        const path = Path.join(LocalNovelsPath, file);
-        console.log(path);
-        if (extname === 'txt') {
-            const name = Path.basename(file, '.txt');
-            loaclnovellist.push({
-                path,
-                name,
-            })
+    constructor(title?: string) {
+        if (title) {
+            this.options.title = title;
         }
-    })
-    return Promise.resolve(loaclnovellist)
-    // vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(fileDir));
-    // vscode.Uri(fileDir);
-    // const treeNode: TreeNode[] = await explorerNodeManager.getAllBooks();
-    // treeDataProvider.fire();
-    // explorerNodeManager.treeNode = treeNode;
-    // fundConfig.forEach((code) => {
-    //     const url = `https://fundgz.1234567.com.cn/js/${code}.js?rt=${time}`
-    //     promises.push(request(url))
-    // })
-    // return Promise.all(promises).then((results) => {
-    //     const resultArr: Novel[] = []
-    //     // results.forEach((rsp: string) => {
-    //     //     const match = rsp.match(/jsonpgz\((.+)\)/)
-    //     //     if (!match || !match[1]) {
-    //     //         return
-    //     //     }
-    //     //     const str = match[1]
-    //     //     const obj = JSON.parse(str)
-    //     //     const info: Novel = {
-    //     //         now: obj.gsz,
-    //     //         name: obj.name,
-    //     //         code: obj.fundcode,
-    //     //         lastClose: obj.dwjz,
-    //     //         changeRate: obj.gszzl,
-    //     //         changeAmount: (obj.gsz - obj.dwjz).toFixed(4),
-    //     //     }
-    //     //     resultArr.push(info)
-    //     // })
-    //     return [{
-    //         now: "123",
-    //         name: "123",
-    //         code: "123",
-    //         lastClose: "123",
-    //         changeRate: "123",
-    //         changeAmount: "123",
-    //     }]
-    // })
+        this.start();
+    }
+
+    async start() {
+        this.isStop = false;
+        window.withProgress(this.options, async () => {
+            await new Promise((resolve) => {
+                setInterval(() => {
+                    if (this.isStop) {
+                        resolve(undefined);
+                    }
+                }, 500);
+            });
+        });
+    }
+
+    stop() {
+        this.isStop = true;
+    }
 }
 
+export function openLocalDir() {
+    const fileDir = workspace.getConfiguration().get('novel.fileDir', '');
+    Open(fileDir || LocalNovelsPath);
+}
 
 export function getLocalBooks(): Promise <Novel[]> {
 
@@ -120,16 +86,23 @@ export function getLocalBooks(): Promise <Novel[]> {
 
 
 export const searchOnline = async function (provider: DataProvider) {
-        const msg = await window.showInputBox({
-            password: false,
-            ignoreFocusOut: false,
-            placeHolder: '请输入小说的名字',
-            prompt: ''
-        });
-        if (msg) {
-            provider.treeNode = await search(msg);
-            provider.refresh(true);
-        }
+
+    const msg = await window.showInputBox({
+        password: false,
+        ignoreFocusOut: false,
+        placeHolder: '请输入小说的名字',
+        prompt: ''
+    });
+
+    const notification = new Notification(`搜索: ${msg}`);
+
+    if (msg) {
+        provider.treeNode = await search(msg);
+        provider.refresh(true);
+    }
+    
+    notification.stop();
+
 };
 
 
@@ -194,3 +167,4 @@ export const getContent = async(pathStr: string)=> {
     }
     return result;
 }
+

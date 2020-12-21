@@ -2,7 +2,7 @@ import { ExtensionContext, commands, window, workspace, Uri, ViewColumn, Memento
 import Provider from './Provider';
 import FavoriteProvider from './FavoriteProvider';
 import * as Fs from 'fs';
-import { getContent, searchOnline } from './utils';
+import { getContent, openLocalDir, searchOnline } from './utils';
 import * as Path from 'path';
 
 
@@ -48,6 +48,9 @@ export function activate(context: ExtensionContext) {
 		}),
 		
 		commands.registerCommand('searchOnlineNovel', () => searchOnline(provider)),
+		
+		commands.registerCommand('openLocalDir', () => openLocalDir()),
+
 		commands.registerCommand(
 			'openSelectedNovel', (args) => {
 

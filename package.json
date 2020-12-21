@@ -95,6 +95,11 @@
 					},
 					"scope": "window",
 					"description": "小说阅读进度"
+				},
+				"novel.fileDir": {
+					"type": "string",
+					"scope": "window",
+					"description": "小说本地存放目录"
 				}
 			}
 		}
