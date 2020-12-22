@@ -7,9 +7,7 @@ import * as cheerio from 'cheerio';
 import DataProvider from './Provider';
 
 const DOMAIN = 'https://www.biquge.com.cn';
-// 这是mac下路径,windows要去win的路径, mac下xxx要替换自己主机名字
-// const LocalNovelsPath = '/Users/xxx/book';
-const LocalNovelsPath = '/Users/menglinlun';
+
 // 请求
 const request = async (url: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -62,20 +60,20 @@ export class Notification {
     }
 }
 
-export function openLocalDir() {
+export function openLocalDir(localNovelsPath:string) {
     const fileDir = workspace.getConfiguration().get('novel.fileDir', '');
-    Open(fileDir || LocalNovelsPath);
+    Open(fileDir || localNovelsPath);
 }
 
-export function getLocalBooks(): Promise <Novel[]> {
+export function getLocalBooks(localNovelsPath: string): Promise <Novel[]> {
 
-    const files = Fs.readdirSync(LocalNovelsPath);
+    const files = Fs.readdirSync(localNovelsPath);
     const loaclnovellist = [] as any;
     files.forEach((file: string) => {
         const extname = Path.extname(file).substr(1);
         if (extname === 'txt') {
             const name = Path.basename(file, '.txt');
-            const path = Path.join(LocalNovelsPath, file);
+            const path = Path.join(localNovelsPath, file);
             loaclnovellist.push({
                 path,
                 name,

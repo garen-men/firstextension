@@ -1,5 +1,5 @@
 import { window, Event, EventEmitter, TreeDataProvider, workspace } from 'vscode'
-import { getChapter, getLocalBooks } from './utils'
+import { getChapter } from './utils'
 import NovelTreeItem from './NovelTreeItem'
 import OnlineTreeItem from './OnlineTreeItem'
 export default class FavoriteProvider implements TreeDataProvider<Novel> {

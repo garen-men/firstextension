@@ -8,10 +8,13 @@ import * as Path from 'path';
 
 // 激活插件
 export function activate(context: ExtensionContext) {
+	console.log('地址', context.extensionPath,context.extensionUri)
+	// 把插件地址作为自己的本地图书目录
+	const localNovelsPath = context.extensionPath;
 
 
 	// 数据类
-	const provider = new Provider();
+	const provider = new Provider(localNovelsPath);
 	const favoriteProvider = new FavoriteProvider();
 
 	// 数据注册
@@ -43,7 +46,7 @@ export function activate(context: ExtensionContext) {
 		
 		commands.registerCommand('searchOnlineNovel', () => searchOnline(provider)),
 		
-		commands.registerCommand('openLocalDir', () => openLocalDir()),
+		commands.registerCommand('openLocalDir', () => openLocalDir(localNovelsPath)),
 
 		commands.registerCommand(
 			'openSelectedNovel', (args) => {

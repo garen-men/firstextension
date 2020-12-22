@@ -13,8 +13,9 @@ export default class DataProvider implements TreeDataProvider<Novel> {
 
     public treeNode: Novel[] = [];
 
-    constructor() {
-        getLocalBooks().then((res) => {
+    constructor(localNovelsPath: string) {
+    
+        getLocalBooks(localNovelsPath).then((res) => {
             this.treeNode = res;
         })
     }
@@ -36,7 +37,7 @@ export default class DataProvider implements TreeDataProvider<Novel> {
     }
 
     async getChildren(element?: Novel | undefined): Promise<Novel[]> {
-        console.log('element',element);
+        // console.log('element',element);
         if (element) {
             return await getChapter(element.path);
         }
