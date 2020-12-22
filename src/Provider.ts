@@ -14,7 +14,7 @@ export default class DataProvider implements TreeDataProvider<Novel> {
     public treeNode: Novel[] = [];
 
     constructor(localNovelsPath: string) {
-        window.showInformationMessage('小说插件启动');
+
         getLocalBooks(localNovelsPath).then((res) => {
             this.treeNode = res;
         }).catch((e) => {

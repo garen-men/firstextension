@@ -2,7 +2,7 @@
 	"name": "firstextension",
 	"displayName": "FirstExtension",
 	"description": "a tutorial for extension",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"license": "MIT",
 	"publisher": "mguy",
 	"repository": {
@@ -16,7 +16,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:novel-list"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
