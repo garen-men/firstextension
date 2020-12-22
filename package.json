@@ -2,7 +2,7 @@
 	"name": "firstextension",
 	"displayName": "FirstExtension",
 	"description": "a tutorial for extension",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"license": "MIT",
 	"publisher": "mguy",
 	"repository": {
