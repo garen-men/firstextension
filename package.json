@@ -2,7 +2,7 @@
 	"name": "firstextension",
 	"displayName": "FirstExtension",
 	"description": "a tutorial for extension",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"publisher": "mguy",
 	"repository": {
 		"type": "git",
