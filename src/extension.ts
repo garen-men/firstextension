@@ -2,7 +2,7 @@ import { ExtensionContext, commands, window, workspace, Uri, ViewColumn, Memento
 import Provider from './Provider';
 import FavoriteProvider from './FavoriteProvider';
 import * as Fs from 'fs';
-import { getContent, openLocalDir, searchOnline } from './utils';
+import { getContent, getLocalBooks, openLocalDir, searchOnline } from './utils';
 import * as Path from 'path';
 
 
@@ -10,7 +10,8 @@ import * as Path from 'path';
 export function activate(context: ExtensionContext) {
 
 	// 把插件地址作为自己的本地图书目录
-	const localNovelsPath = context.extensionPath;
+	const fileDir = workspace.getConfiguration().get('novel.fileDir', '');
+	const localNovelsPath = fileDir || context.extensionPath;
 
 	// 数据类
 	const provider = new Provider(localNovelsPath);
@@ -28,8 +29,8 @@ export function activate(context: ExtensionContext) {
 	// menu 事件
 	context.subscriptions.push(
 
-		commands.registerCommand(`novel.refresh`, () => {
-			provider.refresh(true)
+		commands.registerCommand(`refreshlocal`, () => {
+			provider.refresh(false)
 		}),
 
 		commands.registerCommand(`addFavorite`, function(args){

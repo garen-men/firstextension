@@ -5,6 +5,7 @@
 	"version": "1.0.8",
 	"license": "MIT",
 	"publisher": "mguy",
+	"icon": "images/title.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/menglinlun/firstextension.git"
@@ -22,6 +23,11 @@
 	"contributes": {
 		"commands": [
 			{
+				"command": "refreshlocal",
+				"title": "刷新本地图书",
+				"icon": "images/refresh.svg"
+			},
+			{
 				"command": "openSelectedNovel",
 				"title": "打开该小说"
 			},
@@ -30,12 +36,12 @@
 				"title": "打开该网络小说"
 			},
 			{
-				"command": "searchOnlineNovel",
-				"title": "在线搜索"
+				"command": "openLocalDir",
+				"title": "加本地图书"
 			},
 			{
-				"command": "openLocalDir",
-				"title": "添加本地图书"
+				"command": "searchOnlineNovel",
+				"title": "在线搜索"
 			},
 			{
 				"command": "addFavorite",
@@ -47,12 +53,17 @@
 			"editor/context": [],
 			"view/title": [
 				{
+					"command": "searchOnlineNovel",
+					"when": "view == novel-list",
+					"group": "navigation"
+				},
+				{
 					"command": "openLocalDir",
 					"when": "view == novel-list",
 					"group": "navigation"
 				},
 				{
-					"command": "searchOnlineNovel",
+					"command": "refreshlocal",
 					"when": "view == novel-list",
 					"group": "navigation"
 				}

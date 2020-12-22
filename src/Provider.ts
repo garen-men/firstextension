@@ -13,18 +13,29 @@ export default class DataProvider implements TreeDataProvider<Novel> {
 
     public treeNode: Novel[] = [];
 
+    private localNovelsPath: string;
+
     constructor(localNovelsPath: string) {
+        
+        this.localNovelsPath = localNovelsPath;
 
         getLocalBooks(localNovelsPath).then((res) => {
             this.treeNode = res;
         }).catch((e) => {
-            window.showInformationMessage(localNovelsPath,'分割',e);
-            
+            window.showInformationMessage(e);
         })
     }
 
     refresh(isOnline: boolean) {
         this.isOnline = isOnline;
+        if (!this.isOnline) {
+            getLocalBooks(this.localNovelsPath).then((res) => {
+                this.treeNode = res;
+                this.refreshEvent.fire(null)
+            }).catch((e) => {
+                window.showInformationMessage(e);
+            })
+        }
         this.refreshEvent.fire(null)
     }
 

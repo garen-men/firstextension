@@ -61,8 +61,8 @@ export class Notification {
 }
 
 export function openLocalDir(localNovelsPath:string) {
-    const fileDir = workspace.getConfiguration().get('novel.fileDir', '');
-    Open(fileDir || localNovelsPath);
+    Open(localNovelsPath);
+    window.showInformationMessage(`本地目录已经打开`);
 }
 
 export function getLocalBooks(localNovelsPath: string): Promise <Novel[]> {
