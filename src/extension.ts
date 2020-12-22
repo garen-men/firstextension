@@ -8,9 +8,10 @@ import * as Path from 'path';
 
 // 激活插件
 export function activate(context: ExtensionContext) {
-	console.log('地址', context.extensionPath,context.extensionUri)
+
 	// 把插件地址作为自己的本地图书目录
 	const localNovelsPath = context.extensionPath;
+	window.showInformationMessage('小说插件启动了', localNovelsPath);
 
 
 	// 数据类
